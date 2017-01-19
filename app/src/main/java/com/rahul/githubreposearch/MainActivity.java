@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.rahul.githubreposearch.NetworkUtils;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -123,9 +125,15 @@ public class MainActivity extends AppCompatActivity {
             // COMPLETED (27) As soon as the loading is complete, hide the loading indicator
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
+                String result= null;
+                try {
+                    result = OpenRepoJsonUtils.convert1dToString(OpenRepoJsonUtils.getOwnerName(MainActivity.this,githubSearchResults));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 // COMPLETED (17) Call showJsonDataView if we have valid, non-null results
                 showJsonDataView();
-                mSearchResultsTextView.setText(githubSearchResults);
+                mSearchResultsTextView.setText(result);
             } else {
                 // COMPLETED (16) Call showErrorMessage if the result is null in onPostExecute
                 showErrorMessage();
